@@ -43,7 +43,7 @@ public class AssetController {
 
     @Autowired
     ModelMapper modelMapper;
-    
+
     @GetMapping("/assetDetails/{id}")
     public ResponseEntity<Asset> getAsset(@PathVariable Long id) {
         Optional<Asset> asset = assetRepository.findById(id);
@@ -91,7 +91,7 @@ public class AssetController {
         }
         log.info(assetUpdateDto);
         AssetActive assetActive = modelMapper.map(assetUpdateDto, AssetActive.class);
-        AssetHistory assetHistory = modelMapper.map(assetUpdateDto, AssetHistory.class);
+        AssetHistory assetHistory = modelMapper.map(assetActive, AssetHistory.class);
         assetHistory.setId(null);
         assetHistoryRepository.save(assetHistory);
         assetActiveRepository.save(assetActive);
