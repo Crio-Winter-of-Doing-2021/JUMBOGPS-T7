@@ -43,7 +43,7 @@ public class AssetController {
 
     @Autowired
     ModelMapper modelMapper;
-
+    
     @GetMapping("/assetDetails/{id}")
     public ResponseEntity<Asset> getAsset(@PathVariable Long id) {
         Optional<Asset> asset = assetRepository.findById(id);
