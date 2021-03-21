@@ -2,10 +2,8 @@
   padding: 1.1%;
   margin: 0.5em;
   width: 20%;
-  height: 98%;
   z-index: 1;
   background-color: aliceblue;
-  /* color: grey; */
   position: fixed;
   box-shadow: 10px 10px 15px grey;
   border-radius: 1.2%;
@@ -13,18 +11,32 @@
 
 #map {
   background-color: gray;
-  margin: -1em;
+  width: 100px !important;
+  height: 60% !important;
 }
 body {
-  padding: 1em;
   overflow: hidden;
+  color: #222;
 }
-/* @media (max-wi) */
 
 #my-timeline {
   z-index: 1;
-  width: 40%;
-  height: 100%;
+  margin: 0em;
+  position: absolute;
+  width: 35vw;
+  height: 100vh;
   box-shadow: 10px 10px 15px grey;
-  background-color: #222;
+  /* background-color: rgb(157, 218, 233); */
 }
+
+.my-nav {
+  z-index: 1;
+  margin-bottom: 3em;
+}
+
+/* .info-bar {
+  height: 90vh !important;
+  width: 40vw !important;
+  margin: 0.5em;
+  box-shadow: 20 px 20 px 10 px grey;
+} */

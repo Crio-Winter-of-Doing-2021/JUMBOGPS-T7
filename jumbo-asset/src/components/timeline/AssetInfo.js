@@ -1,18 +1,16 @@
 import React, { Component } from "react";
-import { MapContainer } from "../maps/Maps";
+import MapContainer from "../maps/Maps";
 
 export default class AssetInfo extends Component {
   render() {
     return (
-      <div class="my-timeline">
-        <div class="ui grid">
-          <div class="two wide column">
-            <h1>IN TIMELINE</h1>
+      <>
+        <div class="ui teal inverted segment" id="my-timeline">
+          <div class="ui red inverted">
+            <div class="container">Name :</div>
           </div>
-          <div class="two wide column"></div>
-          <MapContainer />
         </div>
-      </div>
+      </>
     );
   }
 }
