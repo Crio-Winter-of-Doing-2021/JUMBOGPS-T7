@@ -6,8 +6,8 @@ export default class App extends Component {
   render() {
     return (
       <>
-        <SideBar />
         <MapContainer />
+        <SideBar />
       </>
     );
   }

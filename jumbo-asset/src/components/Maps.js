@@ -46,21 +46,21 @@ export class MapContainer extends Component {
     ];
 
     return (
-      <Map
-        google={this.props.google}
-        onMouseover={this.onMapClicked}
-        style={{ width: "100%", height: "100%", marginLeft: "10%" }}
-        className={"map"}
-        zoom={5}
-        initialCenter={{
-          lat: 25,
-          lng: 80,
-        }}
-      >
-        {cordinates.map((e) => {
-          return <Marker position={{ lat: e.lat, lng: e.lng }} />;
-        })}
-      </Map>
+      <div id="map">
+        <Map
+          google={this.props.google}
+          onMouseover={this.onMapClicked}
+          zoom={5}
+          initialCenter={{
+            lat: 25,
+            lng: 80,
+          }}
+        >
+          {cordinates.map((e) => {
+            return <Marker position={{ lat: e.lat, lng: e.lng }} />;
+          })}
+        </Map>
+      </div>
     );
   }
 }
