@@ -1,21 +1,16 @@
 import React, { Component } from "react";
-import Filter from "./Filter";
+import Search from "./search/Search";
+import SearchByID from "./search/SearchById";
 export default class SideBar extends Component {
+  onSearchSubmit(searchObj) {
+    console.log(searchObj);
+  }
   render() {
     return (
-      <div id="sidebar">
-        Powerful search
-        {search()}
-        <Filter />
+      <div id="my-sidebar">
+        <SearchByID callApi={this.onSearchSubmit} />
+        <Search />
       </div>
     );
   }
-}
-
-function search() {
-  return (
-    <form id="search">
-      <input type="number" name="id" />
-    </form>
-  );
 }
