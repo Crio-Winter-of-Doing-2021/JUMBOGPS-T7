@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import SearchByID from "./SearchById";
+
 export default class Search extends Component {
   constructor(props) {
     super(props);
@@ -60,13 +60,4 @@ export default class Search extends Component {
       </form>
     );
   }
-}
-{
-  /* 
-function showOptions(){
-    return(<>{for(let i = 0; i < 100; i++) {
-                 <option value={i}>{i}</option>
-                
-            </>}}
-} */
 }

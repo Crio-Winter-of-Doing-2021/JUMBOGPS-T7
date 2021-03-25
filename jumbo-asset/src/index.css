@@ -1,7 +1,7 @@
-#my-sidebar {
+.my-sidebar {
   padding: 1.1%;
-  margin: 0.5em;
-  width: 20%;
+  width: 25%;
+  height: 100%;
   z-index: 1;
   background-color: aliceblue;
   position: fixed;
@@ -9,24 +9,26 @@
   border-radius: 1.2%;
 }
 
-#map {
+.map {
   background-color: gray;
-  width: 100px !important;
-  height: 60% !important;
+  margin-left:25%;
+  width: 75% !important;
+  height: 95% !important;
 }
 body {
   overflow: hidden;
   color: #222;
 }
 
-#my-timeline {
+.my-timeline {
+  padding: 1.1%;
+  width: 25%;
+  height: 100%;
   z-index: 1;
-  margin: 0em;
-  position: absolute;
-  width: 35vw;
-  height: 100vh;
+  background-color: aliceblue;
+  position: fixed;
   box-shadow: 10px 10px 15px grey;
-  /* background-color: rgb(157, 218, 233); */
+  border-radius: 1.2%;
 }
 
 .my-nav {
@@ -34,9 +36,15 @@ body {
   margin-bottom: 3em;
 }
 
-/* .info-bar {
-  height: 90vh !important;
-  width: 40vw !important;
-  margin: 0.5em;
-  box-shadow: 20 px 20 px 10 px grey;
-} */
+@media screen and (max-width: 662px) {
+  .my-sidebar {
+   width: 100%;
+   height: 35%;
+  }
+  .map {
+    margin: 1em;
+    margin-top: 45% !important; 
+    width: 100% !important;
+    /* height: 0%; */
+  }
+}

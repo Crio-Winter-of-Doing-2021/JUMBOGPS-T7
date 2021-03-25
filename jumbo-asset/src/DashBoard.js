@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import MapContainer from "./components/maps/Maps";
 import Search from "./components/search/Search";
 import SearchByID from "./components/search/SearchById";
-
-export default class SideBar extends Component {
+import coordinates from "./data.js";
+export default class DashBoard extends Component {
   constructor(props) {
     super(props);
   }
@@ -15,11 +15,11 @@ export default class SideBar extends Component {
   render() {
     return (
       <>
-        <div id="my-sidebar">
+        <div className="my-sidebar">
           <SearchByID callApi={this.onSearchSubmit} />
           <Search />
         </div>
-        <MapContainer />
+        <MapContainer data={coordinates} />
       </>
     );
   }
