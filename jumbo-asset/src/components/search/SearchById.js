@@ -18,21 +18,21 @@ export default class SearchByID extends Component {
   render() {
     return (
       <form className="ui form" onSubmit={this.onFormSubmit}>
-        <div class="field">
+        <div className="field">
           <label>Asset Search By ID</label>
-          <div class="ui category search">
-            <div class="ui icon input">
+          <div className="ui category search">
+            <div className="ui icon input">
               <input
-                class="prompt"
+                className="prompt"
                 type="text"
                 value={this.state.searchId}
                 onChange={(e) => this.setState({ searchId: e.target.value })}
                 placeholder="Enter ID..."
               />
-              <i class="search icon"></i>
+              <i className="search icon"></i>
             </div>
           </div>
-          <div class="results"></div>
+          <div className="results"></div>
         </div>
       </form>
     );

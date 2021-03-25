@@ -32,9 +32,9 @@ export default class Search extends Component {
   };
   dateTimeDisplay = () => {
     return (
-      <div class="ui calendar" id="example1">
-        <div class="ui input left icon">
-          <i class="calendar icon"></i>
+      <div className="ui calendar" id="example1">
+        <div className="ui input left icon">
+          <i className="calendar icon"></i>
           <input
             type="date"
             placeholder="Date/Time"
@@ -47,9 +47,9 @@ export default class Search extends Component {
   render() {
     return (
       <form className="ui form" onSubmit={this.onFormSubmit}>
-        <div class="field">
+        <div className="field">
           <label> Change Number of Assets Shown</label>
-          <select class="ui fluid search dropdown" multiple="">
+          <select className="ui fluid search dropdown" multiple="">
             {this.displayOptions(100)}
           </select>
           <h3> Select Start Date</h3>
