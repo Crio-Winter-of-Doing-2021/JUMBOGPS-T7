@@ -6,8 +6,6 @@ import com.crio.jumbo.assettracking.dto.AssetDto;
 import com.crio.jumbo.assettracking.dto.AssetFilterDto;
 import com.crio.jumbo.assettracking.dto.AssetHistoryDto;
 import com.crio.jumbo.assettracking.dto.AssetUpdateDto;
-import com.crio.jumbo.assettracking.dto.Location;
-import com.crio.jumbo.assettracking.entity.AssetHistory;
 import com.crio.jumbo.assettracking.exception.AssetNotFoundException;
 import com.crio.jumbo.assettracking.repository.AssetActiveRepository;
 import com.crio.jumbo.assettracking.repository.AssetHistoryRepository;
