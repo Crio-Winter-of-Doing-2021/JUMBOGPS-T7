@@ -1,6 +1,9 @@
 package com.crio.jumbo.assettracking.service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,8 +68,11 @@ public class AssetServiceImpl implements AssetService {
         }
         // add timestamp if not present
         if (assetUpdateDto.getLocation().getUpdated() == null) {
-            assetUpdateDto.getLocation().setUpdated(LocalDateTime.now());
+            assetUpdateDto.getLocation().setUpdated(LocalDateTime.now(ZoneId.of("Z")));
         }
+
+        // post request shouldn't change asset type, we can also remove asset type from request body
+        assetUpdateDto.setAssetType(asset.getAssetType());
 
         AssetActive assetActive = modelMapper.map(assetUpdateDto, AssetActive.class);
         AssetHistory assetHistory = modelMapper.map(assetActive, AssetHistory.class);
@@ -80,6 +86,27 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public List<AssetUpdateDto> getAssetsLatestLocation(AssetFilterDto assetFilterDto) {
         List<AssetActive> activeAssets = assetActiveRepositoryService.getAllActiveAssets();
+
+        // filter by type
+        if (assetFilterDto.getType() != null) {
+            activeAssets = filterByType(activeAssets, assetFilterDto.getType());
+        }
+
+        // filter by time
+        if (assetFilterDto.getStart() != null || assetFilterDto.getEnd() != null) {
+            activeAssets = filterByTime(activeAssets, assetFilterDto.getStart(), assetFilterDto.getEnd());
+        }
+
+        // sort by time
+        Comparator<AssetActive> dateTimeComparator = Comparator.comparing(AssetActive::getUpdated);
+        Collections.sort(activeAssets, dateTimeComparator);
+        
+        // filter by max (return only max results)
+        int max = assetFilterDto.getMax() == null ? 100 : assetFilterDto.getMax();
+        max = Math.min(max, activeAssets.size());
+        int start = activeAssets.size() - max;
+        activeAssets = activeAssets.subList(start, activeAssets.size());
+
         List<AssetUpdateDto> activeAssetUpdateDtos = activeAssets.stream()
                 .map(activeAsset -> modelMapper.map(activeAsset, AssetUpdateDto.class)).collect(Collectors.toList());
         return activeAssetUpdateDtos;
@@ -99,13 +126,36 @@ public class AssetServiceImpl implements AssetService {
         AssetHistoryDto historyDto = new AssetHistoryDto();
         historyDto.setAssetId(id);
         historyDto.setAssetType(asset.getAssetType());
+        // 24 hours earlier in utc time zone
+        LocalDateTime start = LocalDateTime.now(ZoneId.of("Z")).minusDays(1);
 
         for (AssetHistory history : assetHistory) {
             Location location = new Location(history.getLatitude(), history.getLongitude(), history.getUpdated());
-            historyDto.getAssetLocationHistory().add(location);
+            // only add updates made in last 24 hours to result
+            if (location.getUpdated().isAfter(start)) {
+                historyDto.getAssetLocationHistory().add(location);
+            }
         }
 
         return historyDto;
+    }
+
+    private List<AssetActive> filterByType(List<AssetActive> activeAssets, String type) {
+        String modifiedType = type.strip().toUpperCase();
+        return activeAssets.stream().filter(asset -> asset.getAssetType().equals(modifiedType))
+                .collect(Collectors.toList());
+    }
+
+    private List<AssetActive> filterByTime(List<AssetActive> activeAssets, LocalDateTime start, LocalDateTime end) {
+        if (start != null) {
+            activeAssets = activeAssets.stream().filter(asset -> asset.getUpdated().isAfter(start))
+                    .collect(Collectors.toList());
+        }
+        if (end != null) {
+            activeAssets = activeAssets.stream().filter(asset -> asset.getUpdated().isBefore(end))
+                    .collect(Collectors.toList());
+        }
+        return activeAssets;
     }
 
 }
