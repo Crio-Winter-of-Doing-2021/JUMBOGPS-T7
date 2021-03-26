@@ -39,7 +39,6 @@ export class MapContainer extends Component {
             lng: 80,
           }}
         >
-          {/* <Listing places={this.state.places} /> */}
           <Marker
             title="Location"
             id={1}

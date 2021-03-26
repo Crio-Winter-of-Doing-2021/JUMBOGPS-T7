@@ -47,15 +47,26 @@ export default class Search extends Component {
   render() {
     return (
       <form className="ui form" onSubmit={this.onFormSubmit}>
+        <br />
+        <hr />
+        <br />
         <div className="field">
-          <label> Change Number of Assets Shown</label>
+          <h4 className="ui header"> Change Number of Assets Shown</h4>
           <select className="ui fluid search dropdown" multiple="">
             {this.displayOptions(100)}
           </select>
-          <h3> Select Start Date</h3>
-          {this.dateTimeDisplay()}
-          <h3> Select End Date </h3>
-          {this.dateTimeDisplay()}
+          <br />
+          <br />
+          <div class="ui two column very relaxed grid">
+            <div class="column">
+              <h4 class="ui header"> Select Start Date</h4>
+              {this.dateTimeDisplay()}
+            </div>
+            <div class="column">
+              <h4 class="ui header"> Select End Date </h4>
+              {this.dateTimeDisplay()}
+            </div>
+          </div>
         </div>
       </form>
     );

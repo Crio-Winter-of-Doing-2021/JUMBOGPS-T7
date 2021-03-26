@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import DashBoard from "./DashBoard";
 import TimeLine from "./TimeLine";
 import MapContainer from "./components/maps/Maps";
+import Maps from "./Maps";
 // import NavBar from "./components/NavBar";
 
 export default class App extends Component {
@@ -17,7 +18,7 @@ export default class App extends Component {
             <Link className="item" to="/assets">
               DashBoard
             </Link>
-            <Link className="item" to="/assets/1">
+            <Link className="item" to="/assets/id">
               TimeLine
             </Link>
           </nav>
@@ -25,8 +26,8 @@ export default class App extends Component {
           <Switch>
             <Route path="/" exact component={DashBoard} />
             <Route path="/assets" exact component={DashBoard} />
-            <Route path="/assets/:id" exact children={Timeline} />
-            {/* <Route path="/assets/id" exact component={TimeLine} /> */}
+            <Route path="/assets/id" exact children={Timeline} />
+            <Route path="/assets/:id" exact component={TimeLine} />
           </Switch>
         </Router>
         <MapContainer />

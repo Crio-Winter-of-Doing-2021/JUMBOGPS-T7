@@ -12,10 +12,7 @@ export default class DashBoard extends Component {
     this.state = {
       url: process.env.REACT_APP_API_URL,
       params: {
-        max: null,
-        type: null,
-        startDate: null,
-        endDate: null,
+        max: 100,
       },
     };
   }
@@ -25,13 +22,16 @@ export default class DashBoard extends Component {
     this.setState({ id });
   }
   fetchData = (id) => {
-    axios
-      .get(this.state.url + "assets", {
-        params: this.state.params,
-      })
-      .then(function (response) {
-        console.log(response);
-      });
+    const config = {
+      params: this.state.params,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      },
+    };
+    axios.get(process.env.REACT_APP_API_URL+"/assets", config).then(function (response) {
+      console.log(response);
+    });
   };
   onSearchSubmit(searchObj) {
     console.log(searchObj);

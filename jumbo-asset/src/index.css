@@ -1,9 +1,14 @@
+body {
+  overflow: hidden;
+  background-color: greenyellow;
+}
+
 .my-sidebar {
   padding: 1.1%;
   width: 25%;
   height: 100%;
   z-index: 1;
-  background-color: aliceblue;
+  background-color: rgb(155, 200, 240);
   position: fixed;
   box-shadow: 10px 10px 15px grey;
   border-radius: 1.2%;
@@ -15,26 +20,19 @@
   width: 75% !important;
   height: 95% !important;
 }
-body {
-  overflow: hidden;
-  color: #222;
-}
 
+/* 
 .my-timeline {
   padding: 1.1%;
   width: 25%;
   height: 100%;
   z-index: 1;
-  background-color: aliceblue;
+  background-color: rgb(157, 198, 233);
   position: fixed;
   box-shadow: 10px 10px 15px grey;
   border-radius: 1.2%;
-}
+} */
 
-.my-nav {
-  z-index: 1;
-  margin-bottom: 3em;
-}
 
 @media screen and (max-width: 662px) {
   .my-sidebar {

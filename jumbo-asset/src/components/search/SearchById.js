@@ -19,7 +19,7 @@ export default class SearchByID extends Component {
     return (
       <form className="ui form" onSubmit={this.onFormSubmit}>
         <div className="field">
-          <label>Asset Search By ID</label>
+          <h3 className="ui header">Asset Search By ID</h3>
           <div className="ui category search">
             <div className="ui icon input">
               <input
