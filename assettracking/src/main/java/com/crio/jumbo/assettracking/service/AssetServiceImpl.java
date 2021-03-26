@@ -1,6 +1,7 @@
 package com.crio.jumbo.assettracking.service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -67,7 +68,7 @@ public class AssetServiceImpl implements AssetService {
         }
         // add timestamp if not present
         if (assetUpdateDto.getLocation().getUpdated() == null) {
-            assetUpdateDto.getLocation().setUpdated(LocalDateTime.now());
+            assetUpdateDto.getLocation().setUpdated(LocalDateTime.now(ZoneId.of("Z")));
         }
 
         // post request shouldn't change asset type, we can also remove asset type from request body
@@ -125,10 +126,15 @@ public class AssetServiceImpl implements AssetService {
         AssetHistoryDto historyDto = new AssetHistoryDto();
         historyDto.setAssetId(id);
         historyDto.setAssetType(asset.getAssetType());
+        // 24 hours earlier in utc time zone
+        LocalDateTime start = LocalDateTime.now(ZoneId.of("Z")).minusDays(1);
 
         for (AssetHistory history : assetHistory) {
             Location location = new Location(history.getLatitude(), history.getLongitude(), history.getUpdated());
-            historyDto.getAssetLocationHistory().add(location);
+            // only add updates made in last 24 hours to result
+            if (location.getUpdated().isAfter(start)) {
+                historyDto.getAssetLocationHistory().add(location);
+            }
         }
 
         return historyDto;
