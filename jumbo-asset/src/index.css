@@ -1,9 +1,11 @@
 body {
   overflow: hidden;
-}
+  /* padding: 1em; */
 
+}
 .my-sidebar {
   padding: 1.1%;
+  margin-top: -1em;
   width: 25%;
   height: 100%;
   z-index: 1;
@@ -11,23 +13,32 @@ body {
   position: fixed;
   box-shadow: 10px 10px 15px grey;
   border-radius: 1.2%;
-}
+  margin-bottom: 4em !important;
 
+}
+.nav{
+  margin-bottom: 2em;
+}
 .map {
-  background-color: gray;
-  margin-left:25%;
-  width: 75% !important;
-  height: 95% !important;
+  /* padding: 15em; */
+  margin-top: -1em;
+  background-color: blue;
+  margin-left:25% !important;
+  width: 60% !important;
+  height: 90% !important;
+  border-radius: 1.2%;
+
 }
 
 @media screen and (max-width: 662px) {
   .my-sidebar {
    width: 100%;
    height: 35%;
+   margin: 0em  !important;
   }
   .map {
-    margin: 1em;
-    margin-top: 45% !important; 
+    margin-top: -11em;
+    /* margin-top: 45% !important;  */
     width: 100% !important;
   }
 }

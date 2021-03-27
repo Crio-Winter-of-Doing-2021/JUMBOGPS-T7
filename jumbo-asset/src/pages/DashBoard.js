@@ -1,10 +1,10 @@
-import React, { Component, useContext } from "react";
+import React, { Component } from "react";
 import Search from "../components/search/Search";
 import SearchByID from "../components/search/SearchById";
 import axios from "axios";
-import MarkerContext from "../ContextData";
+import MapContainer from "../components/maps/MapContainer";
+
 export default class DashBoard extends Component {
-  static contextType = MarkerContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -12,13 +12,10 @@ export default class DashBoard extends Component {
       params: {
         max: 100,
       },
+      loc: null,
     };
   }
   componentDidMount() {
-    this.fetchData();
-  }
-  fetchData = () => {
-    const { markers, setMarkers } = this.context;
     const config = {
       params: this.state.params,
       headers: {
@@ -27,18 +24,14 @@ export default class DashBoard extends Component {
       },
       loc: null,
     };
-    const response = axios
+    axios
       .get(process.env.REACT_APP_API_URL + "/assets", config)
-      .then(function (response) {
-        console.log(response);
-        setMarkers(response.data);
-        // console.log(this.context);
+      .then((response) => {
+        console.log(response.data);
+        this.setState({ loc: response });
       });
-    this.setState({ loc: response });
-    // this.setState({ contex : })
-    this.contextType = this.state.loc;
-    // console.log(this.state.loc);?
-  };
+    console.log(this.state.loc);
+  }
   onIdSubmit = (searchObj) => {
     console.log(searchObj);
     this.props.history.push("/assets/" + searchObj);
@@ -53,6 +46,13 @@ export default class DashBoard extends Component {
           <SearchByID callIdSearch={this.onIdSubmit} />
           <Search callFilterSearch={this.onFilterSearch} />
         </div>
+        {this.state.loc ? (
+          <div className="map">
+            <MapContainer data={this.state.loc} infoWindow={true} />
+          </div>
+        ) : (
+          "LODING"
+        )}
       </>
     );
   }
