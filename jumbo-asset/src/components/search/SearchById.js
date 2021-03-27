@@ -15,7 +15,7 @@ export default class SearchByID extends Component {
     return (
       <form className="ui form" onSubmit={(e) => e.preventDefault()}>
         <h3 className="ui header">Asset Search By ID</h3>
-        <div class="ui action input">
+        <div className="ui action input">
           <input
             className="prompt"
             type="text"
@@ -24,7 +24,7 @@ export default class SearchByID extends Component {
             placeholder="Enter ID..."
           />
         </div>
-        <button class="ui primary button" onClick={this.onSubmitId}>
+        <button className="ui primary button" onClick={this.onSubmitId}>
           Search
         </button>
       </form>

@@ -11,9 +11,9 @@ export default class DashBoard extends Component {
       url: process.env.REACT_APP_API_URL,
       params: {
         max: 100,
-        startDate: null,
-        endDate: null,
-        type: null,
+        // startDate: new Date(),
+        // endDate: new Date(),
+        type: "",
       },
       loc: null,
     };
@@ -32,7 +32,7 @@ export default class DashBoard extends Component {
   renderMap = (response) => {
     console.log("RESPONSE", response);
     return (
-      <div class="map">
+      <div className="map">
         <MapContainer data={response} infoWindow={true} />
       </div>
     );
@@ -74,7 +74,7 @@ export default class DashBoard extends Component {
           />
         </div>
         {this.state.loc ? (
-          <div class="map">
+          <div className="map">
             <MapContainer data={this.state.loc} infoWindow={true} />
           </div>
         ) : (

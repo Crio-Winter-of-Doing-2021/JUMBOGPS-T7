@@ -76,7 +76,23 @@ export class MapContainer extends Component {
           marker={this.state.activeMarker}
           visible={this.state.showingInfoWindow}
         >
-          <DisplayInfo data={this.state.selectedPlace} />
+          {this.state.selectedPlace.data ? (
+            <div className="ui segment">
+              <h5 className="ui header">
+                Asset ID : {this.state.selectedPlace.data.asset_id}
+              </h5>
+              <h5> Asset Type : {this.state.selectedPlace.data.asset_type}</h5>
+              <h6>
+                Last Updated : {this.state.selectedPlace.data.location.updated}
+              </h6>
+              <a href={"/assets/" + this.state.selectedPlace.data.asset_id}>
+                More Info
+              </a>
+            </div>
+          ) : (
+            <div>N/A</div>
+          )}
+          {/* <DisplayInfo data={this.state.selectedPlace} /> */}
         </InfoWindow>
       </Map>
     );
