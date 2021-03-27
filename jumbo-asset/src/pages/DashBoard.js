@@ -21,32 +21,47 @@ export default class DashBoard extends Component {
   componentDidMount() {
     this.fetchData();
   }
-  fetchData = () => {
+  componentDidUpdate() {
+    console.log("UPDATED");
+    console.log(this.state.loc);
+  }
+  componentDidCatch(error, errorInfo) {
+    // You can also log the error to an error reporting service
+    console.log(error, errorInfo);
+  }
+  renderMap = (response) => {
+    console.log("RESPONSE", response);
+    return (
+      <div class="map">
+        <MapContainer data={response} infoWindow={true} />
+      </div>
+    );
+  };
+  fetchData = (searchParams) => {
     const config = {
-      params: this.state.params,
+      params: searchParams,
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
       },
-      loc: null,
     };
     axios
       .get(process.env.REACT_APP_API_URL + "assets", config)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         this.setState({ loc: response });
+        // this.renderMap(response);
       })
       .catch((error) => console.log("OOPS ERROR", error));
-    console.log(this.state.loc);
+    // console.log(this.state.loc);
   };
   onIdSubmit = (searchObj) => {
     console.log(searchObj);
     this.props.history.push("/assets/" + searchObj);
   };
   onFilterSearch = (searchParams) => {
-    console.log(searchParams);
-    this.setState({ params: searchParams });
-    this.fetchData();
+    // console.log(searchParams);
+    this.fetchData(searchParams);
   };
   render() {
     return (
@@ -59,11 +74,11 @@ export default class DashBoard extends Component {
           />
         </div>
         {this.state.loc ? (
-          <div className="map">
+          <div class="map">
             <MapContainer data={this.state.loc} infoWindow={true} />
           </div>
         ) : (
-          "LODING"
+          "LOADING"
         )}
       </>
     );

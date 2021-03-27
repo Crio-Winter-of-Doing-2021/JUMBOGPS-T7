@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
 
 function DisplayInfo({ data }) {
-  console.log(data.data);
+  console.log(data);
   return (
     <div className="ui segment">
       <h5 className="ui header"> Asset ID : {data.data.asset_id}</h5>
@@ -11,6 +11,7 @@ function DisplayInfo({ data }) {
       <a href={"/assets/" + data.data.asset_id}> More Info </a>
     </div>
   );
+  // }
 }
 export class MapContainer extends Component {
   constructor(props) {
@@ -23,6 +24,9 @@ export class MapContainer extends Component {
       activeMarker: {},
       selectedPlace: {},
     };
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setState({ pos: nextProps.data });
   }
   onMarkerClick = (props, marker, e) =>
     this.setState({
@@ -56,6 +60,7 @@ export class MapContainer extends Component {
           ? this.state.pos.data.map((pos) => {
               return (
                 <Marker
+                  key={pos.asset_id}
                   onClick={this.onMarkerClick}
                   data={pos}
                   position={{
@@ -66,6 +71,7 @@ export class MapContainer extends Component {
               );
             })
           : this.props.children}
+
         <InfoWindow
           marker={this.state.activeMarker}
           visible={this.state.showingInfoWindow}

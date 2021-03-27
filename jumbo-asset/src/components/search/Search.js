@@ -11,7 +11,6 @@ export default class Search extends Component {
       endDate: props.data.endDate,
       type: props.data.type,
     };
-    console.log(props.data);
   }
 
   displayOptions = (limit) => {
@@ -42,15 +41,15 @@ export default class Search extends Component {
         <br />
         <div className="field">
           <h4 className="ui header"> Change Number of Assets Shown</h4>
-          <select
-            className="ui search"
-            value={this.state.value}
-            onChange={(e) => {
-              this.setState({ max: e.target.value });
-            }}
-          >
-            {this.displayOptions(100)}
-          </select>
+          <div class="ui action input">
+            <input
+              className="prompt"
+              type="text"
+              value={this.state.max}
+              onChange={(e) => this.setState({ max: e.target.value })}
+              placeholder="Enter Number..."
+            />
+          </div>
           <h4 class="ui header"> Select Start Date</h4>
           <SemanticDatepicker
             onChange={(e, d) => {
