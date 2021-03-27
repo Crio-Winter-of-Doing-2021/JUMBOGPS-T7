@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import MapContainer from "../components/maps/MapContainer";
 import axios from "axios";
 import AssetInfo from "../components/timeline/AssetInfo";
-import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
+import { Marker } from "google-maps-react";
 
 export default class DashBoard extends Component {
   constructor(props) {
