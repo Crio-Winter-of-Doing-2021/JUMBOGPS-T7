@@ -11,11 +11,17 @@ export default class DashBoard extends Component {
       url: process.env.REACT_APP_API_URL,
       params: {
         max: 100,
+        startDate: null,
+        endDate: null,
+        type: null,
       },
       loc: null,
     };
   }
   componentDidMount() {
+    this.fetchData();
+  }
+  fetchData = () => {
     const config = {
       params: this.state.params,
       headers: {
@@ -25,26 +31,32 @@ export default class DashBoard extends Component {
       loc: null,
     };
     axios
-      .get(process.env.REACT_APP_API_URL + "/assets", config)
+      .get(process.env.REACT_APP_API_URL + "assets", config)
       .then((response) => {
         console.log(response.data);
         this.setState({ loc: response });
-      });
+      })
+      .catch((error) => console.log("OOPS ERROR", error));
     console.log(this.state.loc);
-  }
+  };
   onIdSubmit = (searchObj) => {
     console.log(searchObj);
     this.props.history.push("/assets/" + searchObj);
   };
   onFilterSearch = (searchParams) => {
+    console.log(searchParams);
     this.setState({ params: searchParams });
+    this.fetchData();
   };
   render() {
     return (
       <>
         <div className="my-sidebar">
           <SearchByID callIdSearch={this.onIdSubmit} />
-          <Search callFilterSearch={this.onFilterSearch} />
+          <Search
+            data={this.state.params}
+            callFilterSearch={this.onFilterSearch}
+          />
         </div>
         {this.state.loc ? (
           <div className="map">
