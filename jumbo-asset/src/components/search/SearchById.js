@@ -3,21 +3,17 @@ import React, { Component } from "react";
 export default class SearchByID extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = { searchId: "" };
   }
 
-  onInputChange(event) {
-    console.log(event.target.value);
-  }
-
-  onFormSubmit = (event) => {
-    event.preventDefault();
-    console.log(this.state.searchId);
-    // this.props.sendID(this.state.searchId);
+  onSubmitId = () => {
+    this.props.callIdSearch(this.state.searchId);
   };
+  componentWillMount;
   render() {
     return (
-      <form className="ui form" onSubmit={this.onFormSubmit}>
+      <form className="ui form" onSubmit={(e) => e.preventDefault()}>
         <div className="field">
           <h3 className="ui header">Asset Search By ID</h3>
           <div className="ui category search">
@@ -32,8 +28,10 @@ export default class SearchByID extends Component {
               <i className="search icon"></i>
             </div>
           </div>
-          <div className="results"></div>
         </div>
+        <button class="ui primary button" onClick={this.onSubmitId}>
+          Search
+        </button>
       </form>
     );
   }

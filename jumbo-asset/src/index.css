@@ -1,6 +1,5 @@
 body {
   overflow: hidden;
-  background-color: greenyellow;
 }
 
 .my-sidebar {
@@ -21,19 +20,6 @@ body {
   height: 95% !important;
 }
 
-/* 
-.my-timeline {
-  padding: 1.1%;
-  width: 25%;
-  height: 100%;
-  z-index: 1;
-  background-color: rgb(157, 198, 233);
-  position: fixed;
-  box-shadow: 10px 10px 15px grey;
-  border-radius: 1.2%;
-} */
-
-
 @media screen and (max-width: 662px) {
   .my-sidebar {
    width: 100%;
@@ -43,6 +29,5 @@ body {
     margin: 1em;
     margin-top: 45% !important; 
     width: 100% !important;
-    /* height: 0%; */
   }
 }

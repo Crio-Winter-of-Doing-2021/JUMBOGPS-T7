@@ -1,102 +1,65 @@
-import React, { Component } from "react";
-import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
-import coordinates from "../../data";
+// import React, { Component } from "react";
+// import { Marker } from "google-maps-react";
+// import PropTypes from "prop-types";
+// import ReactDOM from "react-dom";
+// import axios from "axios";
+// import Markers from "./Markers";
+// export default class Map extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.mapRef = React.createRef();
+//   }
 
-export class MapContainer extends Component {
-  state = {
-    showingInfoWindow: false,
-    activeMarker1: {},
-    activeMarker2: {},
-    data: {},
-  };
+//   componentDidUpdate(prevProps, prevState) {
+//     console.log(prevProps);
+//     if (prevProps.google !== this.props.google) {
+//       this.loadMap();
+//     }
+//   }
 
-  onMarkerClick = (props, marker, e) =>
-    // const markername = props.id
-    this.setState({
-      data: props.data,
-      activeMarker1: marker,
-      showingInfoWindow: true,
-    });
+//   loadMap = () => {
+//     console.log(this.mapRef);
+//     console.log("IN LOADING");
+//     console.log(this.props.google);
+//     if (this.props && this.props.google) {
+//       const maps = this.props.google.maps;
+//       console.log("MAPS");
+//       let zoom = 13;
+//       let lat = 37.774929;
+//       let lng = -122.419416;
+//       const center = new maps.LatLng(lat, lng);
+//       const mapConfig = Object.assign(
+//         {},
+//         {
+//           center: center,
+//           zoom: zoom,
+//         }
+//       );
+//       this.mapRef = new maps.Map(this.mapRef.current, mapConfig);
+//     }
+//     console.log(this.mapRef);
+//   };
+//   render() {
+//     return (
+//       <div className="maps" ref={this.mapRef}>
+//         <Marker onClick={this.onMarkerClick} name={"Current location"} />;
+//       </div>
+//     );
+//   }
+// }
 
-  onMapClicked = (props) => {
-    if (this.state.showingInfoWindow) {
-      this.setState({
-        showingInfoWindow: false,
-        activeMarker: null,
-      });
-    }
-  };
-  render() {
-    return (
-      <div>
-        <Map
-          className="map"
-          google={this.props.google}
-          onMouseover={this.onMapClicked}
-          zoom={5}
-          initialCenter={{
-            lat: 25,
-            lng: 80,
-          }}
-        >
-          <Marker
-            title="Location"
-            id={1}
-            position={{ lat: 24.6, lng: 76.32 }}
-            draggable={true}
-            // onDragend={this.moveMarker.bind(this)}
-          >
-            <InfoWindow visible={true}>
-              <div>
-                <p>
-                  Click on the map or drag the marker to select location where
-                  the incident occurred
-                </p>
-              </div>
-            </InfoWindow>
-          </Marker>
-          {
-            /* {coordinates.map((e) => { */
-            // return (
-            // <Marker
-            //   key={e.id}
-            //   data={e}
-            //   onClick={this.onMarkerClick}
-            //   position={{ lat: e.lat, lng: e.lng }}
-            // />
-            //     <Marker
-            //       title={e.name}
-            //       id={e.id}
-            //       position={{ lat: e.lat, lng: e.lng }}
-            //       draggable={true}
-            //       // onDragend={this.moveMarker.bind(this)}
-            //     >
-            //       <InfoWindow visible={false}>
-            //         <div>
-            //           <p>
-            //             Click on the map or drag the marker to select location
-            //             where the incident occurred
-            //           </p>
-            //         </div>
-            //       </InfoWindow>
-            //     </Marker>
-            //   );
-            // })}
-            // <InfoWindow
-            //   marker={this.state.activeMarker}
-            //   visible={this.state.showingInfoWindow}
-            // >
-            //   <div>
-            //     <h1>{this.state.data.name}</h1>
-            //   </div>
-            // </InfoWindow>*/
-          }
-        </Map>
-      </div>
-    );
-  }
-}
-
-export default GoogleApiWrapper({
-  apiKey: process.env.REACT_APP_API_KEY,
-})(MapContainer);
+// Map.propTypes = {
+//   google: PropTypes.object,
+//   zoom: PropTypes.number,
+//   initialCenter: PropTypes.object,
+//   centerAroundCurrentLocation: PropTypes.bool,
+//   onMove: PropTypes.func,
+// };
+// Map.defaultProps = {
+//   zoom: 13,
+//   initialCenter: {
+//     lat: 37.774929,
+//     lng: -122.419416,
+//   },
+//   centerAroundCurrentLocation: false,
+// };
