@@ -3,7 +3,6 @@ package com.crio.jumbo.assettracking.service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -75,7 +74,8 @@ public class AssetServiceImpl implements AssetService {
             assetUpdateDto.getLocation().setUpdated(LocalDateTime.now(ZoneId.of("Z")));
         }
 
-        // post request shouldn't change asset type, we can also remove asset type from request body
+        // post request shouldn't change asset type, we can also remove asset type from
+        // request body
         assetUpdateDto.setAssetType(asset.getAssetType());
 
         AssetActive assetActive = modelMapper.map(assetUpdateDto, AssetActive.class);
@@ -104,7 +104,7 @@ public class AssetServiceImpl implements AssetService {
         // sort by time
         Comparator<AssetActive> dateTimeComparator = Comparator.comparing(AssetActive::getUpdated);
         Collections.sort(activeAssets, dateTimeComparator);
-        
+
         // filter by max (return only max results)
         int max = assetFilterDto.getMax() == null ? 100 : assetFilterDto.getMax();
         max = Math.min(max, activeAssets.size());
@@ -136,9 +136,9 @@ public class AssetServiceImpl implements AssetService {
         for (AssetHistory history : assetHistory) {
             Location location = new Location(history.getLatitude(), history.getLongitude(), history.getUpdated());
             // only add updates made in last 24 hours to result
-            if (location.getUpdated().isAfter(start)) {
-                historyDto.getAssetLocationHistory().add(location);
-            }
+            // if (location.getUpdated().isAfter(start)) {
+            historyDto.getAssetLocationHistory().add(location);
+            // }
         }
 
         return historyDto;
@@ -168,7 +168,7 @@ public class AssetServiceImpl implements AssetService {
         List<Asset> allAssets = assetRepositoryService.findAll();
 
         Set<String> types = new HashSet<>();
-        for (Asset asset: allAssets) {
+        for (Asset asset : allAssets) {
             if (!types.contains(asset.getAssetType())) {
                 types.add(asset.getAssetType());
                 distinctAssetTypes.add(asset.getAssetType());

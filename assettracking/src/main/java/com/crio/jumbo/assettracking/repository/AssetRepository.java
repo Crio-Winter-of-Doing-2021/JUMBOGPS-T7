@@ -1,7 +1,5 @@
 package com.crio.jumbo.assettracking.repository;
 
-import java.util.List;
-
 import com.crio.jumbo.assettracking.entity.Asset;
 
 import org.springframework.data.jpa.repository.JpaRepository;
