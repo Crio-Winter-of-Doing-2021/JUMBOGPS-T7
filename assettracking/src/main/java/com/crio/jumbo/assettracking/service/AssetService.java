@@ -19,5 +19,6 @@ public interface AssetService {
 
     List<AssetUpdateDto> getAssetsLatestLocation(AssetFilterDto assetFilterDto);
     AssetHistoryDto getAssetHistoryById(Long id) throws AssetNotFoundException;
+    List<String> getDistinctTypes();
 
 }

@@ -1,5 +1,6 @@
 package com.crio.jumbo.assettracking.repositoryservices;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.crio.jumbo.assettracking.entity.Asset;
@@ -26,6 +27,11 @@ public class AssetRepositoryServiceImpl implements AssetRepositoryService {
     @Override
     public Asset saveAsset(Asset asset) {
         return assetRepository.save(asset);
+    }
+
+    @Override
+    public List<Asset> findAll() {
+        return assetRepository.findAll();
     }
 
 }
