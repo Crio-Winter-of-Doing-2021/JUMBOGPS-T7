@@ -3,11 +3,11 @@ import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
 function DisplayInfo({ data }) {
   console.log(data);
   return (
-    <div className="ui segment">
-      <h5 className="ui header"> Asset ID : {data.data.asset_id}</h5>
-      <h5> Asset Type : {data.data.asset_type}</h5>
-      <h6> Last Updated : {data.data.location.updated}</h6>
-      <a href={"/assets/" + data.data.asset_id}> More Info </a>
+    <div className="ui inverted segment">
+      <h5 className="ui header"> Asset ID : {data.asset_id}</h5>
+      <h5> Asset Type : {data.asset_type}</h5>
+      <h6> Last Updated : {data.location.updated}</h6>
+      <a href={"/assets/" + data.asset_id}> More Info </a>
     </div>
   );
   // }
@@ -119,6 +119,7 @@ export class MapContainer extends Component {
                   </a>
                 </li>
               </ul>
+              {/* <DisplayInfo data={this.state.selectedPlace.data} /> */}
             </div>
           ) : (
             <div>N/A</div>

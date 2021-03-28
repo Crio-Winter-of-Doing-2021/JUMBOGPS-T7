@@ -52,11 +52,12 @@ export default class DashBoard extends Component {
         type: new Set(),
       },
       loc: null,
-      types: "",
+      types: [],
     };
   }
   componentDidMount() {
     this.fetchData();
+    this.fetchAssetTypes();
   }
   componentDidUpdate() {
     console.log("UPDATED");
@@ -74,6 +75,20 @@ export default class DashBoard extends Component {
       </div>
     );
   };
+  fetchAssetTypes = () => {
+    const config = {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      },
+    };
+    axios
+      .get(process.env.REACT_APP_API_URL + "assetTypes", config)
+      .then((response) => {
+        this.setState({ types: response.data });
+      })
+      .catch((error) => console.log("OOPS ERROR", error));
+  };
   fetchData = (searchParams) => {
     console.log(searchParams);
     const config = {
@@ -87,14 +102,8 @@ export default class DashBoard extends Component {
       .get(process.env.REACT_APP_API_URL + "assets", config)
       .then((response) => {
         // console.log(response.data);
-        const mySet1 = new Set();
-        mySet1.add("ALL");
-        response.data.map((asset) => {
-          mySet1.add(asset.asset_type);
-        });
-        console.log("ASSETS", mySet1);
+
         this.setState({ loc: response });
-        this.setState({ types: mySet1 });
         // this.renderMap(response);
       })
       .catch((error) => console.log("OOPS ERROR", error));
