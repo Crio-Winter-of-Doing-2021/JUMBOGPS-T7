@@ -1,4 +1,4 @@
-package com.crio.jumbo.assettracking.repositories;
+package com.crio.jumbo.assettracking.repository;
 
 import java.util.List;
 
