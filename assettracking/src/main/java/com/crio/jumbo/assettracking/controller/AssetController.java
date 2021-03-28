@@ -1,5 +1,6 @@
 package com.crio.jumbo.assettracking.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.crio.jumbo.assettracking.dto.AssetDto;
@@ -41,6 +42,14 @@ public class AssetController {
 
     @Autowired
     ModelMapper modelMapper;
+
+    @GetMapping("/assetTypes")
+    public ResponseEntity<List<String>> getAssetTypes() {
+        List<String> distinctAssetTypes = new ArrayList<>();
+        distinctAssetTypes.add("ALL");
+        distinctAssetTypes.addAll(assetService.getDistinctTypes());
+        return ResponseEntity.ok().body(distinctAssetTypes);
+    }
 
     @GetMapping("/assetDetails/{id}")
     public ResponseEntity<AssetDto> getAsset(@PathVariable Long id) {

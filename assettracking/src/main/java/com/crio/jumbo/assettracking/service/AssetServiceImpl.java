@@ -2,9 +2,13 @@ package com.crio.jumbo.assettracking.service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.crio.jumbo.assettracking.dto.AssetDto;
@@ -156,6 +160,24 @@ public class AssetServiceImpl implements AssetService {
                     .collect(Collectors.toList());
         }
         return activeAssets;
+    }
+
+    @Override
+    public List<String> getDistinctTypes() {
+        List<String> distinctAssetTypes = new ArrayList<>();
+        List<Asset> allAssets = assetRepositoryService.findAll();
+
+        Set<String> types = new HashSet<>();
+        for (Asset asset: allAssets) {
+            if (!types.contains(asset.getAssetType())) {
+                types.add(asset.getAssetType());
+                distinctAssetTypes.add(asset.getAssetType());
+            }
+        }
+
+        Collections.sort(distinctAssetTypes);
+
+        return distinctAssetTypes;
     }
 
 }
