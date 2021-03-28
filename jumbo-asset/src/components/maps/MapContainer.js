@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
-
 function DisplayInfo({ data }) {
-  console.log(data.data);
+  console.log(data);
   return (
-    <div className="ui segment">
-      <h5 className="ui header"> Asset ID : {data.data.asset_id}</h5>
-      <h5> Asset Type : {data.data.asset_type}</h5>
-      <h6> Last Updated : {data.data.location.updated}</h6>
-      <a href={"/assets/" + data.data.asset_id}> More Info </a>
+    <div className="ui inverted segment">
+      <h5 className="ui header"> Asset ID : {data.asset_id}</h5>
+      <h5> Asset Type : {data.asset_type}</h5>
+      <h6> Last Updated : {data.location.updated}</h6>
+      <a href={"/assets/" + data.asset_id}> More Info </a>
     </div>
   );
+  // }
 }
 export class MapContainer extends Component {
   constructor(props) {
@@ -18,12 +18,32 @@ export class MapContainer extends Component {
     console.log(props);
     this.state = {
       pos: this.props.data,
-      center: null,
+      center: this.props.initialCenter,
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
     };
   }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.currentLocation != this.state.currentLocation) {
+      {
+        const map = this.map;
+        const curr = this.state.currentLocation;
+
+        const google = this.props.google;
+        const maps = google.maps;
+
+        if (map) {
+          let center = new maps.LatLng(7, 72);
+          map.panToBounds(center);
+        }
+      }
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setState({ pos: nextProps.data });
+  }
+  recenterMap = () => {};
   onMarkerClick = (props, marker, e) =>
     this.setState({
       selectedPlace: props,
@@ -39,6 +59,15 @@ export class MapContainer extends Component {
       });
     }
   };
+
+  getDate = (date) => {
+    const dateUTC = new Date(date);
+    const dateIST = new Date(dateUTC.getTime());
+    return dateIST.toDateString();
+  };
+  getBounds = () => {
+    console.log(this.props.google.LatLngBounds());
+  };
   render() {
     const styles = { width: "75%", height: "95%", borderRadius: "1.2%" };
     return (
@@ -47,15 +76,17 @@ export class MapContainer extends Component {
         google={this.props.google}
         style={styles}
         zoom={5}
-        initialCenter={{
-          lat: 62.39,
-          lng: 72.52,
-        }}
+        // bounds={() => {
+        //   console.log(this.props.google.LatLngBounds());
+        //   return new this.props.google.LatLngBounds();
+        // }}
+        initialCenter={this.props.initialCenter}
       >
         {this.props.infoWindow
           ? this.state.pos.data.map((pos) => {
               return (
                 <Marker
+                  key={pos.asset_id}
                   onClick={this.onMarkerClick}
                   data={pos}
                   position={{
@@ -66,11 +97,33 @@ export class MapContainer extends Component {
               );
             })
           : this.props.children}
+
         <InfoWindow
           marker={this.state.activeMarker}
           visible={this.state.showingInfoWindow}
         >
-          <DisplayInfo data={this.state.selectedPlace} />
+          {this.state.selectedPlace.data ? (
+            <div className="ui black inverted message">
+              <div className="header">
+                Asset ID : {this.state.selectedPlace.data.asset_id}
+              </div>
+              <ul className="list">
+                <li>Asset Type : {this.state.selectedPlace.data.asset_type}</li>
+                <li>
+                  Last Updated :
+                  {this.getDate(this.state.selectedPlace.data.location.updated)}
+                </li>
+                <li>
+                  <a href={"/assets/" + this.state.selectedPlace.data.asset_id}>
+                    More Info
+                  </a>
+                </li>
+              </ul>
+              {/* <DisplayInfo data={this.state.selectedPlace.data} /> */}
+            </div>
+          ) : (
+            <div>N/A</div>
+          )}
         </InfoWindow>
       </Map>
     );
