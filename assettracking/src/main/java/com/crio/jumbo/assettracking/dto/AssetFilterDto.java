@@ -1,5 +1,7 @@
 package com.crio.jumbo.assettracking.dto;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -15,8 +17,10 @@ public class AssetFilterDto {
     private String type;
 
     @JsonProperty("start")
-    private String start;
+    // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime start;
 
     @JsonProperty("end")
-    private String end;
+    // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime end;
 }
