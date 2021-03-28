@@ -42,3 +42,20 @@ body {
     width: 100% !important;
   }
 }
+
+.infowindow {
+  margin: -1em;
+  /* padding: -100px; */
+}
+
+
+@media screen and (min-wifth:600px){
+  .map{
+    margin-top: 10em;
+    width: 50px;
+  }
+  .my-sidebar {
+    height: 30% !important;
+    width: 90%;
+  }
+}

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
-
 function DisplayInfo({ data }) {
   console.log(data);
   return (
@@ -19,15 +18,32 @@ export class MapContainer extends Component {
     console.log(props);
     this.state = {
       pos: this.props.data,
-      center: null,
+      center: this.props.initialCenter,
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
     };
   }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.currentLocation != this.state.currentLocation) {
+      {
+        const map = this.map;
+        const curr = this.state.currentLocation;
+
+        const google = this.props.google;
+        const maps = google.maps;
+
+        if (map) {
+          let center = new maps.LatLng(7, 72);
+          map.panToBounds(center);
+        }
+      }
+    }
+  }
   componentWillReceiveProps(nextProps) {
     this.setState({ pos: nextProps.data });
   }
+  recenterMap = () => {};
   onMarkerClick = (props, marker, e) =>
     this.setState({
       selectedPlace: props,
@@ -43,6 +59,15 @@ export class MapContainer extends Component {
       });
     }
   };
+
+  getDate = (date) => {
+    const dateUTC = new Date(date);
+    const dateIST = new Date(dateUTC.getTime());
+    return dateIST.toDateString();
+  };
+  getBounds = () => {
+    console.log(this.props.google.LatLngBounds());
+  };
   render() {
     const styles = { width: "75%", height: "95%", borderRadius: "1.2%" };
     return (
@@ -51,10 +76,11 @@ export class MapContainer extends Component {
         google={this.props.google}
         style={styles}
         zoom={5}
-        initialCenter={{
-          lat: 62.39,
-          lng: 72.52,
-        }}
+        // bounds={() => {
+        //   console.log(this.props.google.LatLngBounds());
+        //   return new this.props.google.LatLngBounds();
+        // }}
+        initialCenter={this.props.initialCenter}
       >
         {this.props.infoWindow
           ? this.state.pos.data.map((pos) => {
@@ -77,22 +103,26 @@ export class MapContainer extends Component {
           visible={this.state.showingInfoWindow}
         >
           {this.state.selectedPlace.data ? (
-            <div className="ui segment">
-              <h5 className="ui header">
+            <div className="ui black inverted message">
+              <div className="header">
                 Asset ID : {this.state.selectedPlace.data.asset_id}
-              </h5>
-              <h5> Asset Type : {this.state.selectedPlace.data.asset_type}</h5>
-              <h6>
-                Last Updated : {this.state.selectedPlace.data.location.updated}
-              </h6>
-              <a href={"/assets/" + this.state.selectedPlace.data.asset_id}>
-                More Info
-              </a>
+              </div>
+              <ul className="list">
+                <li>Asset Type : {this.state.selectedPlace.data.asset_type}</li>
+                <li>
+                  Last Updated :
+                  {this.getDate(this.state.selectedPlace.data.location.updated)}
+                </li>
+                <li>
+                  <a href={"/assets/" + this.state.selectedPlace.data.asset_id}>
+                    More Info
+                  </a>
+                </li>
+              </ul>
             </div>
           ) : (
             <div>N/A</div>
           )}
-          {/* <DisplayInfo data={this.state.selectedPlace} /> */}
         </InfoWindow>
       </Map>
     );

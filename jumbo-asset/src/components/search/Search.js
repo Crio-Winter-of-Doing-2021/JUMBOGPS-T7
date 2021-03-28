@@ -5,14 +5,19 @@ import "react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css";
 export default class Search extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props.types);
     this.state = {
-      max: 100,
-      startDate: props.data.startDate,
-      // endDate: props.data.endDate,
-      // type: props.data.type,
+      max: props.data.max,
+      start: "",
+      end: "",
+      type: null,
+      types: Array.from(this.props.types),
     };
   }
-
+  // componentDidUp
+  componentWillReceiveProps(nextProps) {
+    this.setState({ types: Array.from(nextProps.types) });
+  }
   displayOptions = (limit) => {
     var returnArray = [];
     for (let i = 5; i <= limit; i += 5) {
@@ -20,23 +25,23 @@ export default class Search extends Component {
     }
     return returnArray;
   };
-
+  makeDate = (date) => {
+    if (!date) return null;
+    let tempDate = date ? new Date(date).toISOString() : null;
+    if (tempDate.endsWith("Z")) tempDate = tempDate.slice(0, -1);
+    return tempDate;
+  };
   callSearch = () => {
-    // const newStartDate =
-    //   this.state.startDate !== new Date()
-    //     ? new Date(this.state.startDate).toISOString()
-    //     : null;
-    // const newEndDate =
-    //   this.state.startDate !== new Date()
-    //     ? new Date(this.state.endDate).toISOString()
-    //     : null;
-    // this.setState({ startDate: newStartDate });
-    // this.setState({ endDate: newEndDate });
+    const newStartDate = this.makeDate(this.state.start);
+    const newEndDate = this.makeDate(this.state.end);
+
+    this.setState({ start: newStartDate });
+    this.setState({ end: newEndDate });
     this.props.callFilterSearch({
       max: this.state.max,
       type: this.state.type,
-      // endDate: newEndDate,
-      // startDate: newStartDate,
+      end: newEndDate,
+      start: newStartDate,
     });
   };
   render() {
@@ -58,7 +63,7 @@ export default class Search extends Component {
           <SemanticDatepicker
             onChange={(e, d) => {
               console.log(d.value);
-              this.setState({ startDate: d.value });
+              this.setState({ start: d.value });
             }}
           />
         </div>
@@ -66,18 +71,29 @@ export default class Search extends Component {
         <SemanticDatepicker
           onChange={(e, d) => {
             console.log(d.value);
-            this.setState({ endDate: d.value });
+            this.setState({ end: d.value });
           }}
         />
         <br />
         <h4 className="ui header"> Asset Type </h4>
         <div className="ui two column very relaxed grid">
           <div className="column">
-            <input
-              type="text"
-              value={this.state.type}
-              onChange={(e) => this.setState({ type: e.target.value })}
-            />
+            <select
+              className="ui dropdown"
+              onChange={(e) => {
+                this.setState({
+                  type: e.target.value === "ALL" ? null : e.target.value,
+                });
+              }}
+            >
+              {this.state.types.map((element, idx) => {
+                return (
+                  <option key={idx} value={element}>
+                    {element}
+                  </option>
+                );
+              })}
+            </select>
           </div>
           <div className="column">
             <button className="ui primary button" onClick={this.callSearch}>
