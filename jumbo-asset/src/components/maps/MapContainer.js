@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
+import MapContext from "../../MapContext";
+
 function DisplayInfo({ data }) {
   console.log(data);
   return (
@@ -13,9 +15,11 @@ function DisplayInfo({ data }) {
   // }
 }
 export class MapContainer extends Component {
+  static contextType = MapContext;
+
   constructor(props) {
     super(props);
-    console.log(props);
+
     this.state = {
       pos: this.props.data,
       center: this.props.initialCenter,
@@ -69,6 +73,8 @@ export class MapContainer extends Component {
     console.log(this.props.google.LatLngBounds());
   };
   render() {
+    const { pos, infoWindow } = this.context;
+    console.log(pos, infoWindow);
     const styles = { width: "75%", height: "95%", borderRadius: "1.2%" };
     return (
       <Map
@@ -76,14 +82,22 @@ export class MapContainer extends Component {
         google={this.props.google}
         style={styles}
         zoom={5}
-        // bounds={() => {
-        //   console.log(this.props.google.LatLngBounds());
-        //   return new this.props.google.LatLngBounds();
-        // }}
         initialCenter={this.props.initialCenter}
       >
-        {this.props.infoWindow
-          ? this.state.pos.data.map((pos) => {
+        {!infoWindow
+          ? pos.data.location.map((pos) => {
+              return (
+                <Marker
+                  onClick={this.onMarkerClick}
+                  data={pos}
+                  position={{
+                    lat: pos.latitude,
+                    lng: pos.longitude,
+                  }}
+                />
+              );
+            })
+          : pos.data.map((pos) => {
               return (
                 <Marker
                   key={pos.asset_id}
@@ -95,8 +109,7 @@ export class MapContainer extends Component {
                   }}
                 />
               );
-            })
-          : this.props.children}
+            })}
 
         <InfoWindow
           marker={this.state.activeMarker}

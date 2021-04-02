@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import DashBoard from "./pages/DashBoard";
 import TimeLine from "./pages/TimeLine";
-
+import MapContainer from "./components/maps/MapContainer";
 export default function App() {
   return (
     <>
@@ -35,6 +35,9 @@ class NavBar extends Component {
             <Route path="/assets/:id" exact component={TimeLine} />
           </Switch>
         </Router>
+        <div className="map">
+          <MapContainer infoWindow={true} />
+        </div>
       </>
     );
   }

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import MapContainer from "../components/maps/MapContainer";
 import axios from "axios";
 import AssetInfo from "../components/timeline/AssetInfo";
-import { Marker } from "google-maps-react";
+import MapContext from "../MapContext";
 
 export default class DashBoard extends Component {
+  static contextType = MapContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -13,6 +13,7 @@ export default class DashBoard extends Component {
   }
   componentDidMount() {
     const id = this.props.match.params.id;
+    const { setPos, setInfoWindow } = this.context;
     const config = {
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -22,8 +23,8 @@ export default class DashBoard extends Component {
     axios
       .get(process.env.REACT_APP_API_URL + "assets/" + id, config)
       .then((response) => {
-        this.setState({ data: response });
-        console.log(response);
+        setPos(response);
+        setInfoWindow(false);
       });
   }
 
@@ -34,23 +35,6 @@ export default class DashBoard extends Component {
           <>
             <div className="my-sidebar">
               <AssetInfo data={this.state.data} />
-            </div>
-            <div className="map">
-              <MapContainer data={this.state.data} infoWindow={false}>
-                {console.log(this.state.data.data.location)}
-                {this.state.data.data.location.map((pos) => {
-                  return (
-                    <Marker
-                      onClick={this.onMarkerClick}
-                      data={pos}
-                      position={{
-                        lat: pos.latitude,
-                        lng: pos.longitude,
-                      }}
-                    />
-                  );
-                })}
-              </MapContainer>
             </div>
           </>
         ) : (
