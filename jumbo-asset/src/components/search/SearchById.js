@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 export default class SearchByID extends Component {
   constructor(props) {
     super(props);
@@ -8,6 +7,7 @@ export default class SearchByID extends Component {
   }
 
   onSubmitId = () => {
+    console.log("SUNMIT");
     this.props.callIdSearch(this.state.searchId);
   };
   componentWillMount;
@@ -24,9 +24,11 @@ export default class SearchByID extends Component {
             placeholder="Enter ID..."
           />
         </div>
-        <button className="ui primary button" onClick={this.onSubmitId}>
+        {/* <Link to={"/assets/" + this.state.searchId}> */}
+        <button onClick={this.onSubmitId} className="ui primary button">
           Search
         </button>
+        {/* </Link> */}
       </form>
     );
   }

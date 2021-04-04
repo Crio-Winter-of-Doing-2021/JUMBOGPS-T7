@@ -4,6 +4,7 @@ import SearchByID from "../components/search/SearchById";
 import axios from "axios";
 import MapContainer from "../components/maps/MapContainer";
 import MapContext from "../MapContext";
+import { getCordinates } from "../utils";
 
 export default class DashBoard extends Component {
   static contextType = MapContext;
@@ -28,7 +29,7 @@ export default class DashBoard extends Component {
   }
   componentDidUpdate(prevState, prevProps) {
     const { infoWindow } = this.context;
-    console.log(infoWindow);
+    // console.log(infoWindow);
     if (!infoWindow) {
       this.fetchData();
       this.fetchAssetTypes();
@@ -53,7 +54,7 @@ export default class DashBoard extends Component {
       .catch((error) => console.log("OOPS ERROR", error));
   };
   fetchData = (searchParams) => {
-    const { setPos, setInfoWindow } = this.context;
+    const { setDetails } = this.context;
     const config = {
       params: searchParams,
       headers: {
@@ -64,8 +65,11 @@ export default class DashBoard extends Component {
     axios
       .get(process.env.REACT_APP_API_URL + "assets", config)
       .then((response) => {
-        setPos(response);
-        setInfoWindow(true);
+        // setPos(response);
+        const { X, Y, newArray } = getCordinates(response.data);
+        console.log(X, Y, newArray);
+        setDetails(X, Y, newArray, response, true);
+        // setInfoWindow(true);
       })
       .catch((error) => console.log("OOPS ERROR", error));
   };
