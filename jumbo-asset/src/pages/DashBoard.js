@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Search from "../components/search/Search";
 import SearchByID from "../components/search/SearchById";
 import axios from "axios";
-import MapContainer from "../components/maps/MapContainer";
 import MapContext from "../MapContext";
 import { getCordinates } from "../utils";
 
@@ -23,7 +22,6 @@ export default class DashBoard extends Component {
     };
   }
   componentDidMount() {
-    const { pos } = this.context;
     this.fetchData();
     this.fetchAssetTypes();
   }
@@ -80,8 +78,6 @@ export default class DashBoard extends Component {
     this.fetchData(searchParams);
   };
   render() {
-    const { pos, setPos } = this.context;
-
     return (
       <>
         <div className="my-sidebar">

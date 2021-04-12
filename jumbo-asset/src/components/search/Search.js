@@ -57,12 +57,12 @@ export default class Search extends Component {
               value={this.state.max}
               onChange={(e) => {
                 let { value, min, max } = e.target;
-                value = Math.max(
+                const newValue = Math.max(
                   Number(min),
                   Math.min(Number(max), Number(value))
                 );
 
-                this.setState({ max: e.target.value });
+                this.setState({ max: newValue });
               }}
               placeholder="Enter Number..."
               min="1"

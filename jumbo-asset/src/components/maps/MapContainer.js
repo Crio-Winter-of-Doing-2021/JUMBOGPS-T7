@@ -8,7 +8,6 @@ import {
 } from "google-maps-react";
 import MapContext from "../../MapContext";
 import DisplayWindow from "./DisplayWindow";
-import axios from "axios";
 export class MapContainer extends Component {
   static contextType = MapContext;
 
@@ -55,40 +54,18 @@ export class MapContainer extends Component {
     }
   };
   mapClicked = (mapProps, map, event) => {
-    const { markers } = this.state;
     const lat = event.latLng.lat();
     const lng = event.latLng.lng();
     console.log(this.state.geoRoutes);
-    let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=myapikey`;
     const tempArray = this.state.geoRoutes || [];
     const tmpObject = { lat: lat, lng: lng };
     tempArray.push(tmpObject);
-    // this.setState({ geoRoutes: tempArray });
-    // axios.get(url).then((response) => {
-    //   this.setState({
-    //     googleReverseGeolocation: response.data.results[0].formatted_address,
-    //     markers: [
-    //       { position: { lat: event.latLng.lat(), lng: event.latLng.lng() } },
-    //       ...markers,
-    //     ],
-    //     latClick: lat,
-    //     lngClick: lng,
-    //   });
-
-    // });
   };
   getBounds = () => {
     console.log(this.props.google.LatLngBounds());
   };
   render() {
-    const {
-      mapCenterX,
-      lineArray,
-      markers,
-      mapCenterY,
-      pos,
-      infoWindow,
-    } = this.context;
+    const { mapCenterX, markers, mapCenterY, pos, infoWindow } = this.context;
     // console.log(mapCenterX, mapCenterY, markers, pos, infoWindow);
     // console.log(lineArray);
     const styles = { width: "75%", height: "95%", borderRadius: "1.2%" };

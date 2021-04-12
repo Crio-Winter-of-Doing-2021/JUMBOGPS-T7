@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import AssetInfo from "../components/timeline/AssetInfo";
 import MapContext from "../MapContext";
-import { getDate, getCordinates } from "../utils";
+import { getCordinates } from "../utils";
 import SearchByID from "../components/search/SearchById";
 export default class DashBoard extends Component {
   static contextType = MapContext;

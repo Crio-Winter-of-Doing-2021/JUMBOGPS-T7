@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import "./index.scss";
+import "./index.css";
 import { MapProvider } from "./MapContext";
 import { BrowserRouter } from "react-router-dom";
 ReactDOM.render(
