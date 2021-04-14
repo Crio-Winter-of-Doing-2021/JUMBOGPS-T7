@@ -5,7 +5,7 @@ import "react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css";
 export default class Search extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.types);
+    // console.log(this.props.types);
     this.state = {
       max: props.data.max,
       start: "",
@@ -55,8 +55,18 @@ export default class Search extends Component {
               className="prompt"
               type="text"
               value={this.state.max}
-              onChange={(e) => this.setState({ max: e.target.value })}
+              onChange={(e) => {
+                let { value, min, max } = e.target;
+                const newValue = Math.max(
+                  Number(min),
+                  Math.min(Number(max), Number(value))
+                );
+
+                this.setState({ max: newValue });
+              }}
               placeholder="Enter Number..."
+              min="1"
+              max="100"
             />
           </div>
           <h4 className="ui header"> Select Start Date </h4>
@@ -75,6 +85,11 @@ export default class Search extends Component {
           }}
         />
         <br />
+        {this.state.start > this.state.end ? (
+          <div className="ui negative message">
+            Start Date cannot be greater than end Date
+          </div>
+        ) : null}
         <h4 className="ui header"> Asset Type </h4>
         <div className="ui two column very relaxed grid">
           <div className="column">

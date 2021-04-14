@@ -1,21 +1,19 @@
 import React, { Component } from "react";
-import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
-function DisplayInfo({ data }) {
-  console.log(data);
-  return (
-    <div className="ui inverted segment">
-      <h5 className="ui header"> Asset ID : {data.asset_id}</h5>
-      <h5> Asset Type : {data.asset_type}</h5>
-      <h6> Last Updated : {data.location.updated}</h6>
-      <a href={"/assets/" + data.asset_id}> More Info </a>
-    </div>
-  );
-  // }
-}
+import {
+  Map,
+  Polyline,
+  InfoWindow,
+  Marker,
+  GoogleApiWrapper,
+} from "google-maps-react";
+import MapContext from "../../MapContext";
+import DisplayWindow from "./DisplayWindow";
 export class MapContainer extends Component {
+  static contextType = MapContext;
+
   constructor(props) {
     super(props);
-    console.log(props);
+
     this.state = {
       pos: this.props.data,
       center: this.props.initialCenter,
@@ -25,19 +23,14 @@ export class MapContainer extends Component {
     };
   }
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.currentLocation != this.state.currentLocation) {
-      {
-        const map = this.map;
-        const curr = this.state.currentLocation;
+    const map = this.map;
+    const { mapCenterX, mapCenterY } = this.context;
+    const google = this.props.google;
+    const maps = google.maps;
 
-        const google = this.props.google;
-        const maps = google.maps;
-
-        if (map) {
-          let center = new maps.LatLng(7, 72);
-          map.panToBounds(center);
-        }
-      }
+    if (map) {
+      let center = new maps.LatLng(mapCenterX, mapCenterY);
+      map.panTo(center);
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -49,6 +42,7 @@ export class MapContainer extends Component {
       selectedPlace: props,
       activeMarker: marker,
       showingInfoWindow: true,
+      geoRoutes: [],
     });
 
   onMapClicked = (props) => {
@@ -59,31 +53,39 @@ export class MapContainer extends Component {
       });
     }
   };
-
-  getDate = (date) => {
-    const dateUTC = new Date(date);
-    const dateIST = new Date(dateUTC.getTime());
-    return dateIST.toDateString();
+  mapClicked = (mapProps, map, event) => {
+    const lat = event.latLng.lat();
+    const lng = event.latLng.lng();
+    console.log(this.state.geoRoutes);
+    const tempArray = this.state.geoRoutes || [];
+    const tmpObject = { lat: lat, lng: lng };
+    tempArray.push(tmpObject);
   };
   getBounds = () => {
     console.log(this.props.google.LatLngBounds());
   };
   render() {
+    const { mapCenterX, markers, mapCenterY, pos, infoWindow } = this.context;
+    // console.log(mapCenterX, mapCenterY, markers, pos, infoWindow);
+    // console.log(lineArray);
     const styles = { width: "75%", height: "95%", borderRadius: "1.2%" };
     return (
       <Map
-        onClick={this.onMapClicked}
+        onClick={this.mapClicked}
         google={this.props.google}
         style={styles}
-        zoom={5}
-        // bounds={() => {
-        //   console.log(this.props.google.LatLngBounds());
-        //   return new this.props.google.LatLngBounds();
-        // }}
-        initialCenter={this.props.initialCenter}
+        zoom={3}
+        initialCenter={{ lat: mapCenterX, lng: mapCenterY }}
       >
-        {this.props.infoWindow
-          ? this.state.pos.data.map((pos) => {
+        <button>CLICK</button>
+        {!infoWindow
+          ? markers.map((pos) => {
+              // console.log(pos);
+              return <Marker position={pos} />;
+            })
+          : pos.data
+          ? pos.data.map((pos) => {
+              // console.log(pos);
               return (
                 <Marker
                   key={pos.asset_id}
@@ -96,35 +98,37 @@ export class MapContainer extends Component {
                 />
               );
             })
-          : this.props.children}
+          : null}
 
         <InfoWindow
           marker={this.state.activeMarker}
           visible={this.state.showingInfoWindow}
         >
           {this.state.selectedPlace.data ? (
-            <div className="ui black inverted message">
-              <div className="header">
-                Asset ID : {this.state.selectedPlace.data.asset_id}
-              </div>
-              <ul className="list">
-                <li>Asset Type : {this.state.selectedPlace.data.asset_type}</li>
-                <li>
-                  Last Updated :
-                  {this.getDate(this.state.selectedPlace.data.location.updated)}
-                </li>
-                <li>
-                  <a href={"/assets/" + this.state.selectedPlace.data.asset_id}>
-                    More Info
-                  </a>
-                </li>
-              </ul>
-              {/* <DisplayInfo data={this.state.selectedPlace.data} /> */}
-            </div>
+            <DisplayWindow data={this.state.selectedPlace.data} />
           ) : (
             <div>N/A</div>
           )}
         </InfoWindow>
+
+        {!infoWindow && this.state.geoRoutes
+          ? this.state.geoRoutes.map((pos) => {
+              return (
+                <Marker
+                  style={{ backgroundColor: "#222", cursor: "pointer" }}
+                  position={pos}
+                />
+              );
+            })
+          : console.log("NOT PRINTING")}
+        {this.state.geoRoutes ? (
+          <Polyline
+            path={this.state.geoRoutes}
+            strokeColor="#222"
+            strokeOpacity={0.8}
+            strokeWeight={2}
+          />
+        ) : null}
       </Map>
     );
   }

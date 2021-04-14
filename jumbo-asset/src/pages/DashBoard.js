@@ -2,45 +2,11 @@ import React, { Component } from "react";
 import Search from "../components/search/Search";
 import SearchByID from "../components/search/SearchById";
 import axios from "axios";
-import MapContainer from "../components/maps/MapContainer";
-// import getLatLngCenter from "../maps/CenterMap";
-
-// function rad2degr(rad) {
-//   return (rad * 180) / Math.PI;
-// }
-// function degr2rad(degr) {
-//   return (degr * Math.PI) / 180;
-// }
-
-// export default function getLatLngCenter({ latLngInDegr }) {
-//   var LATIDX = 0;
-//   var LNGIDX = 1;
-//   var sumX = 0;
-//   var sumY = 0;
-//   var sumZ = 0;
-
-//   for (var i = 0; i < latLngInDegr.length; i++) {
-//     var lat = degr2rad(latLngInDegr[i][LATIDX]);
-//     var lng = degr2rad(latLngInDegr[i][LNGIDX]);
-//     // sum of cartesian coordinates
-//     sumX += Math.cos(lat) * Math.cos(lng);
-//     sumY += Math.cos(lat) * Math.sin(lng);
-//     sumZ += Math.sin(lat);
-//   }
-
-//   var avgX = sumX / latLngInDegr.length;
-//   var avgY = sumY / latLngInDegr.length;
-//   var avgZ = sumZ / latLngInDegr.length;
-
-//   // convert average x, y, z coordinate to latitude and longtitude
-//   var lng = Math.atan2(avgY, avgX);
-//   var hyp = Math.sqrt(avgX * avgX + avgY * avgY);
-//   var lat = Math.atan2(avgZ, hyp);
-
-//   return [rad2degr(lat), rad2degr(lng)];
-// }
+import MapContext from "../MapContext";
+import { getCordinates } from "../utils";
 
 export default class DashBoard extends Component {
+  static contextType = MapContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -59,22 +25,18 @@ export default class DashBoard extends Component {
     this.fetchData();
     this.fetchAssetTypes();
   }
-  componentDidUpdate() {
-    console.log("UPDATED");
-    console.log(this.state.loc);
+  componentDidUpdate(prevState, prevProps) {
+    const { infoWindow } = this.context;
+    // console.log(infoWindow);
+    if (!infoWindow) {
+      this.fetchData();
+      this.fetchAssetTypes();
+    }
   }
   componentDidCatch(error, errorInfo) {
-    console.log(error, errorInfo);
+    // console.log(error, errorInfo);
   }
 
-  renderMap = (response) => {
-    console.log("RESPONSE", response);
-    return (
-      <div className="map">
-        <MapContainer data={response} infoWindow={true} />
-      </div>
-    );
-  };
   fetchAssetTypes = () => {
     const config = {
       headers: {
@@ -90,7 +52,7 @@ export default class DashBoard extends Component {
       .catch((error) => console.log("OOPS ERROR", error));
   };
   fetchData = (searchParams) => {
-    console.log(searchParams);
+    const { setDetails } = this.context;
     const config = {
       params: searchParams,
       headers: {
@@ -101,20 +63,18 @@ export default class DashBoard extends Component {
     axios
       .get(process.env.REACT_APP_API_URL + "assets", config)
       .then((response) => {
-        // console.log(response.data);
-
-        this.setState({ loc: response });
-        // this.renderMap(response);
+        // setPos(response);
+        const { X, Y, newArray } = getCordinates(response.data);
+        console.log(X, Y, newArray);
+        setDetails(X, Y, newArray, response, true);
+        // setInfoWindow(true);
       })
       .catch((error) => console.log("OOPS ERROR", error));
-    // console.log(this.state.loc);
   };
   onIdSubmit = (searchObj) => {
-    console.log(searchObj);
     this.props.history.push("/assets/" + searchObj);
   };
   onFilterSearch = (searchParams) => {
-    // console.log(searchParams);
     this.fetchData(searchParams);
   };
   render() {
@@ -128,17 +88,6 @@ export default class DashBoard extends Component {
             types={this.state.types}
           />
         </div>
-        {this.state.loc ? (
-          <div className="map">
-            <MapContainer
-              // initialCenter={getLatLngCenter}
-              data={this.state.loc}
-              infoWindow={true}
-            />
-          </div>
-        ) : (
-          "LOADING"
-        )}
       </>
     );
   }
