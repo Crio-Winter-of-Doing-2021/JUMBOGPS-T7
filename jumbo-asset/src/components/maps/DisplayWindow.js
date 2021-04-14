@@ -7,7 +7,7 @@ export default function DisplayWindow({ data }) {
       <li> Asset Type : {data.asset_type}</li>
       <li> Last Updated : {getDate(data.location.updated)}</li>
       <a href={"/assets/" + data.asset_id}>
-        <button>More Info </button>
+        <button className="ui button">More Info </button>
       </a>
     </div>
   );
