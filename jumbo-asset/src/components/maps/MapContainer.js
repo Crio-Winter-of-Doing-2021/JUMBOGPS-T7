@@ -30,7 +30,7 @@ export class MapContainer extends Component {
 
     if (map) {
       let center = new maps.LatLng(mapCenterX, mapCenterY);
-      map.panTo(center);
+      map.Bound(center);
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -74,7 +74,7 @@ export class MapContainer extends Component {
         onClick={this.mapClicked}
         google={this.props.google}
         style={styles}
-        zoom={3}
+        zoom={6}
         initialCenter={{ lat: mapCenterX, lng: mapCenterY }}
       >
         <button>CLICK</button>
